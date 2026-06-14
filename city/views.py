@@ -68,25 +68,39 @@ class CityView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-    def get(self,request,pk):
+    def get(self, request, pk=None):
 
-        try:
-            city=City.objects.get(pk=pk)
-        except City.DoesNotExist:
+        if pk:
+            try:
+                city = City.objects.get(pk=pk)
+            except City.DoesNotExist:
+                return Response(
+                    {"message": "City not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            serializer = CitySerializer(city)
+
             return Response(
                 {
-                    "message": "City not found"
+                    "message": "City retrieved successfully",
+                    "data": serializer.data
                 },
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_200_OK
             )
-        
-        serializer=CitySerializer(city)
+
+        cities = City.objects.all()
+        serializer = CitySerializer(cities, many=True)
 
         return Response(
             {
-                "message": "City retrieved successfully",
+                "message": "Cities retrieved successfully",
                 "data": serializer.data
             },
             status=status.HTTP_200_OK
         )
 
+
+'''
+python does not support method overloading, so a class can not have two get methods. To handle both single and multiple retrievals, we can use an optional parameter (pk) in the get method. If pk is provided, we retrieve a single city; if not, we retrieve all cities.
+'''
