@@ -1,11 +1,14 @@
 
 
+
+
 from city.models import City
-from users import serializers
+from rest_framework import serializers
 
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
         fields = '__all__'
+
         
