@@ -104,7 +104,7 @@ class CityView(APIView):
         serializer = CitySerializer(cities, many=True)
 
         print("Serialized data:", serializer.data)  # Debugging statement to check the serialized data
-        print("Serializer errors:", serializer.errors)  # Debugging statement to check for serializer errors
+        #print("Serializer errors:", serializer.errors)  # Debugging statement to check for serializer errors
 
         return Response(
             {
