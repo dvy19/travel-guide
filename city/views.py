@@ -70,6 +70,17 @@ class CityView(APIView):
         
     def get(self, request, pk=None):
 
+        print("pk:", pk)  # Debugging statement to check the value of pk
+
+        print("Request method:", request.method)  # Debugging statement to check the request method
+
+        print("Request data:", request.data)  # Debugging statement to check the request data
+
+        print("Request query params:", request.query_params)  # Debugging statement to check the query parameters
+
+        print("Request path:", request.path)  # Debugging statement to check the request path
+
+
         if pk:
             try:
                 city = City.objects.get(pk=pk)
@@ -91,6 +102,9 @@ class CityView(APIView):
 
         cities = City.objects.all()
         serializer = CitySerializer(cities, many=True)
+
+        print("Serialized data:", serializer.data)  # Debugging statement to check the serialized data
+        print("Serializer errors:", serializer.errors)  # Debugging statement to check for serializer errors
 
         return Response(
             {

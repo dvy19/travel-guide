@@ -21,7 +21,7 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/cities/', include('city.urls')),  # Include URLs from the city app
+    path('api/city/', include('city.urls')),  # Include URLs from the city app
 
     path('api/accounts/', include('users.urls')),  # Include URLs from the api app
 ]
