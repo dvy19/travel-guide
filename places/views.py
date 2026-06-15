@@ -41,10 +41,7 @@ class PlaceApiView(APIView):
 
         if place_id:
             try:
-                place = Place.objects.select_related(
-                    "city",
-                    "category"
-                ).get(id=place_id)
+                place = Place.objects.get(id=place_id)
 
                 serializer = PlaceDetailSerializer(place)
                 return Response(
