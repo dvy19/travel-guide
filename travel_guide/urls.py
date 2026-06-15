@@ -23,5 +23,7 @@ urlpatterns = [
 
     path('api/city/', include('city.urls')),  # Include URLs from the city app
 
+    path('api/place/', include('places.urls')),  # Include URLs from the place app
+
     path('api/accounts/', include('users.urls')),  # Include URLs from the api app
 ]
