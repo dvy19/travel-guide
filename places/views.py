@@ -1,8 +1,10 @@
+from tkinter import Place
+
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from places.serializers import PlaceCategorySerializer
+from places.serializers import PlaceCategorySerializer, PlaceSerializer, PlaceDetailSerializer
 
 
 # Create your views here.
@@ -30,3 +32,45 @@ class PlaceCategoryView(APIView):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+
+class PlaceApiView(APIView):
+
+    def get(self, request,place_id=None):
+
+
+        if place_id:
+            try:
+                place = Place.objects.select_related(
+                    "city",
+                    "category"
+                ).get(id=place_id)
+
+                serializer = PlaceDetailSerializer(place)
+                return Response(
+                    {
+                        "message": "Place retrieved successfully",
+                        "data": serializer.data
+                    },
+                    status=status.HTTP_200_OK
+                )
+            except Place.DoesNotExist:
+                return Response(
+                    {
+                        "message": "Place not found"
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        
+        places = Place.objects.all()
+        serializer = PlaceSerializer(places, many=True)
+        return Response(
+            {
+                "message": "Places retrieved successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+    
+        
+        
