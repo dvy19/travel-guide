@@ -54,7 +54,7 @@ class Place(models.Model):
 
     closing_time = models.TimeField()
 
-    image_url = models.URLField(blank=True)
+    image_url = models.URLField(blank=True )
 
     created_at = models.DateTimeField(auto_now_add=True)
 

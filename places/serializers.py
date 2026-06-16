@@ -116,6 +116,5 @@ class PlaceDetailSerializer(serializers.ModelSerializer):
             "website",
             "image_url",
             "reviews",
-            "images"
         ]
 

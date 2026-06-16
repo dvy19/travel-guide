@@ -44,6 +44,9 @@ class PlaceApiView(APIView):
                 place = Place.objects.get(id=place_id)
 
                 serializer = PlaceDetailSerializer(place)
+
+                print("Place data:", serializer.data)  # Debugging statement
+                
                 return Response(
                     {
                         "message": "Place retrieved successfully",
