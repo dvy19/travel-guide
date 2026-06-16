@@ -7,6 +7,8 @@ class City(models.Model):
 
     description=models.TextField()
 
+    famous_for=models.TextField(default="")
+
     latitude=models.FloatField()
     longitude=models.FloatField()
 
