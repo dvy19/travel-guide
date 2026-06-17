@@ -116,7 +116,7 @@ class ReviewApiView(APIView):
         )
 
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=request.user)
             return Response(
                 {
                     "message":"Review created successfully",
