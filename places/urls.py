@@ -1,7 +1,7 @@
 # urls.py
 
 from django.urls import path
-from .views import PlaceApiView, PlaceCategoryView
+from .views import PlaceApiView, PlaceCategoryView, ReviewApiView
 
 urlpatterns = [
     path(
@@ -20,5 +20,23 @@ urlpatterns = [
         "places/<int:place_id>/",
         PlaceApiView.as_view(),
         name="place-detail"
+    ),
+
+
+
+     path(
+        "reviews/",
+        ReviewApiView.as_view(),
+        name="reviews"
+    ),
+
+    # Get single review
+    # Update review
+    # Partial update review
+    # Delete review
+    path(
+        "reviews/<int:id>/",
+        ReviewApiView.as_view(),
+        name="review-detail"
     ),
 ]
