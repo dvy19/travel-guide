@@ -73,7 +73,28 @@ class PlaceApiView(APIView):
             },
             status=status.HTTP_200_OK
         )
-    
+
+
+class PlacesByCityAPIView(APIView):
+
+    def get(self, request, city_id):
+
+        places = Place.objects.filter(
+            city_id=city_id
+        )
+
+        serializer = PlaceSerializer(
+            places,
+            many=True
+        )
+
+        return Response(
+            {
+                "message": "Places retrieved successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        ) 
         
 class ReviewApiView(APIView):
 

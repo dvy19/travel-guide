@@ -1,7 +1,7 @@
 # urls.py
 
 from django.urls import path
-from .views import PlaceApiView, PlaceCategoryView, ReviewApiView
+from .views import PlaceApiView, PlaceCategoryView, PlacesByCityAPIView, ReviewApiView
 
 urlpatterns = [
     path(
@@ -23,6 +23,7 @@ urlpatterns = [
     ),
 
 
+    path("places/city/<int:city_id>/", PlacesByCityAPIView.as_view(), name="place-by-city"),
 
      path(
         "reviews/",
