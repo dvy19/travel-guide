@@ -23,7 +23,12 @@ urlpatterns = [
     ),
 
 
-    path("places/city/<int:city_id>/", PlacesByCityAPIView.as_view(), name="place-by-city"),
+    path(
+        "places/city/<int:city_id>/", 
+        PlacesByCityAPIView.as_view(), 
+        name="place-by-city"
+        ),
+
 
      path(
         "reviews/",

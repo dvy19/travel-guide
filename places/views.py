@@ -79,22 +79,26 @@ class PlacesByCityAPIView(APIView):
 
     def get(self, request, city_id):
 
+        search = request.GET.get("search", "")
+
         places = Place.objects.filter(
             city_id=city_id
         )
+
+        if search:
+            places = places.filter(
+                name__icontains=search
+            )
 
         serializer = PlaceSerializer(
             places,
             many=True
         )
 
-        return Response(
-            {
-                "message": "Places retrieved successfully",
-                "data": serializer.data
-            },
-            status=status.HTTP_200_OK
-        ) 
+        return Response({
+            "message": "Places retrieved successfully",
+            "data": serializer.data
+        })
         
 class ReviewApiView(APIView):
 
