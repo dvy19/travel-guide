@@ -1,7 +1,7 @@
 # urls.py
 
 from django.urls import path
-from .views import PlaceApiView, PlaceCategoryView, PlacesByCityAPIView, ReviewApiView
+from .views import PlaceApiView, PlaceCategoryView, PlacesByCityAPIView, ReviewApiView, SavedPlaceApiView
 
 urlpatterns = [
     path(
@@ -15,6 +15,15 @@ urlpatterns = [
         PlaceApiView.as_view(),
         name="place-list"
     ),
+
+
+
+    path(
+        "saved-places/",
+        SavedPlaceApiView.as_view(),
+        name="saved-places"
+    ),
+
 
     path(
         "places/<int:place_id>/",

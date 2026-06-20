@@ -2,7 +2,7 @@
 
 
 from city.models import City
-from places.models import Place, PlaceCategory, Review
+from places.models import Place, PlaceCategory, Review, SavedPlace
 from rest_framework import serializers
 
 # for place category
@@ -119,3 +119,12 @@ class PlaceDetailSerializer(serializers.ModelSerializer):
             "reviews",
         ]
 
+
+class SavedPlaceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SavedPlace
+        fields = "__all__"
+        read_only_fields = [
+            "user",
+        ]

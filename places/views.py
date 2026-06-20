@@ -5,8 +5,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from places.models import Place, Review
-from places.serializers import PlaceCategorySerializer, PlaceSerializer, PlaceDetailSerializer, ReviewSerializer
+from places.models import Place, Review, SavedPlace
+from places.serializers import PlaceCategorySerializer, PlaceSerializer, PlaceDetailSerializer, ReviewSerializer, SavedPlaceSerializer
 
 
 # Create your views here.
@@ -243,3 +243,63 @@ class ReviewApiView(APIView):
             },
             status=status.HTTP_204_NO_CONTENT
         )
+
+class SavedPlaceApiView(APIView):
+
+    def post(self, request):
+
+        serializer=SavedPlaceSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(
+                {
+                    "message":"Place saved successfully",
+                    "data":serializer.data
+                },
+                status=status.HTTP_201_CREATED
+            )
+        
+        return Response(
+            {
+                "message":"Failed to save place",
+                "errors":serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )   
+    
+    def get(self, request):
+
+
+        saved_places=SavedPlace.objects.filter(user=request.user)
+        serializer=SavedPlaceSerializer(saved_places,many=True)
+
+        return Response(
+            {
+                "message":"Saved places retrieved successfully",
+                "data":serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+    
+    def delete(self, request, id):
+        
+        try:
+            saved_place=SavedPlace.objects.get(id=id,user=request.user)
+        except SavedPlace.DoesNotExist:
+            return Response(
+                {
+                    "message":"Saved place not found"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        saved_place.delete()
+        return Response(
+            {
+                "message":"Saved place deleted successfully"
+            },
+            status=status.HTTP_204_NO_CONTENT
+        )
+    
+    
