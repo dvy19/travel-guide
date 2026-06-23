@@ -1,6 +1,7 @@
 from django.db import models
 
 from city.models import City
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class PlaceCategory(models.Model):
@@ -54,7 +55,12 @@ class Place(models.Model):
 
     closing_time = models.TimeField()
 
-    image_url = models.URLField(blank=True )
+    image_url = CloudinaryField(
+        "image",
+        folder="travel_app/places",
+        blank=True,
+        null=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
