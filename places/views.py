@@ -38,6 +38,28 @@ class PlaceCategoryView(APIView):
 
 class PlaceApiView(APIView):
 
+
+    def post(self, request):
+        serializer = PlaceSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Place created successfully",
+                    "data": serializer.data
+                },
+                status=status.HTTP_201_CREATED
+            )
+        
+        return Response(
+            {
+                "message": "Failed to create place",
+                "errors": serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
     def get(self, request,place_id=None):
 
 
