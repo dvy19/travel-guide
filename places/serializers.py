@@ -1,6 +1,3 @@
-
-
-
 from city.models import City
 from places.models import Place, PlaceCategory, Review, SavedPlace
 from rest_framework import serializers

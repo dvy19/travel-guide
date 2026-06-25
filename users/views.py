@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from .serializers import LoginSerializer, RegisterSerializer
+from .serializers import DeviceTokenSerializer, LoginSerializer, RegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your views here.
@@ -15,6 +15,23 @@ def get_tokens_for_user(user):
         "access":  str(refresh.access_token),
     }
 
+
+class DeviceTokenView(APIView):
+
+    permission_classes = [AllowAny]  # no auth needed to register
+
+    def post(self, request):
+
+        serializer = DeviceTokenSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(user=request.user)  # Save the device token with the associated user
+            return Response(
+                {"message": "Device token saved successfully"},
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(APIView):
     permission_classes = [AllowAny]  # no auth needed to login

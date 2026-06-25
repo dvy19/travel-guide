@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser
+from .models import CustomUser, DeviceToken
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -47,3 +47,9 @@ class LoginSerializer(serializers.Serializer):
             "refresh": str(refresh),
             "role": user.role
         }
+
+class DeviceTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeviceToken
+        fields = ['user', 'token', 'created_at']
+        read_only_fields = ['user']

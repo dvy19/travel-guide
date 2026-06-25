@@ -323,5 +323,19 @@ class SavedPlaceApiView(APIView):
             },
             status=status.HTTP_204_NO_CONTENT
         )
-    
-    
+
+
+class UserReviewApiView(APIView):
+
+    def get(self, request):
+        user_reviews=Review.objects.filter(user=request.user)
+
+        serializer=ReviewSerializer(user_reviews,many=True)
+
+        return Response(
+            {
+                "message":"User reviews retrieved successfully",
+                "data":serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
