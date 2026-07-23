@@ -11,6 +11,20 @@ from places.serializers import PlaceCategorySerializer, PlaceSerializer, PlaceDe
 
 # Create your views here.
 
+
+from .services.gemini_service import recommend_places
+
+
+class RecommendPlaces(APIView):
+
+    def post(self, request):
+
+        mood = request.data.get("mood")
+
+        recommendations = recommend_places(mood)
+
+        return Response(recommendations)
+
 class PlaceCategoryView(APIView):
 
     def post(self,request):

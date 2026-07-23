@@ -1,7 +1,7 @@
 # urls.py
 
 from django.urls import path
-from .views import PlaceApiView, PlaceCategoryView, PlacesByCityAPIView, ReviewApiView, UserReviewApiView, SavedPlaceApiView
+from .views import PlaceApiView, PlaceCategoryView, PlacesByCityAPIView, ReviewApiView, UserReviewApiView, SavedPlaceApiView, RecommendPlaces
 
 urlpatterns = [
     path(
@@ -44,6 +44,10 @@ urlpatterns = [
         name="place-by-city"
         ),
 
+  path(
+        "recommend/",
+        RecommendPlaces.as_view()
+    ),
 
      path(
         "reviews/",
