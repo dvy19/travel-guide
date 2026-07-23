@@ -1,3 +1,4 @@
+
 from django.db import models
 
 from city.models import City
@@ -9,7 +10,31 @@ class PlaceCategory(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
+class LikePlace(models.Model):
+
+    user = models.ForeignKey(
+        "users.CustomUser",
+        on_delete=models.CASCADE,
+        related_name="saved_places"
+    )
+
+    place = models.ForeignKey(
+        "Place",
+        on_delete=models.CASCADE,
+        related_name="saved_by_users"
+    )
+
+    liked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "place")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.place.name}"
+
+
 class Place(models.Model):
 
     city = models.ForeignKey(

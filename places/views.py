@@ -5,8 +5,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from places.models import Place, Review, SavedPlace
-from places.serializers import PlaceCategorySerializer, PlaceSerializer, PlaceDetailSerializer, ReviewSerializer, SavedPlaceSerializer
+from places.models import Place, Review, SavedPlace, LikePlace
+from places.serializers import PlaceCategorySerializer, PlaceSerializer, PlaceDetailSerializer, ReviewSerializer, SavedPlaceSerializer, LikePlaceSerializer
 
 
 # Create your views here.
@@ -283,6 +283,7 @@ class ReviewApiView(APIView):
             status=status.HTTP_204_NO_CONTENT
         )
 
+
 class SavedPlaceApiView(APIView):
 
     def post(self, request):
@@ -341,7 +342,65 @@ class SavedPlaceApiView(APIView):
             status=status.HTTP_204_NO_CONTENT
         )
 
+class LikePlaceApiView(APIView):
 
+    def post(self, request):
+
+        serializer=LikePlaceSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(
+                {
+                    "message":"Place liked successfully",
+                    "data":serializer.data
+                },
+                status=status.HTTP_201_CREATED
+            )
+        
+        return Response(
+            {
+                "message":"Failed to save place",
+                "errors":serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )   
+    
+    def get(self, request):
+
+
+        liked_places=LikePlace.objects.filter(user=request.user)
+        serializer=LikePlaceSerializer(liked_places,many=True)
+
+        return Response(
+            {
+                "message":"Liked places retrieved successfully",
+                "data":serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+    
+    def delete(self, request, id):
+        
+        try:
+            like_place=LikePlace.objects.get(id=id,user=request.user)
+        except LikePlace.DoesNotExist:
+            return Response(
+                {
+                    "message":"Like place not found"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        like_place.delete()
+        return Response(
+            {
+                "message":"Liked place deleted successfully"
+            },
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+        
 class UserReviewApiView(APIView):
 
     def get(self, request):
