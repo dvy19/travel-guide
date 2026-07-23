@@ -18,10 +18,13 @@ from .services.gemini_service import recommend_places
 class RecommendPlaces(APIView):
 
     def post(self, request):
+        print("Inside API")
 
         mood = request.data.get("mood")
+        print("Mood:", mood)
 
         recommendations = recommend_places(mood)
+        print(recommendations)
 
         return Response(recommendations)
 

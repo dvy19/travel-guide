@@ -1,6 +1,7 @@
 import google.generativeai as genai
 from django.conf import settings
 import json
+from rest_framework.response import Response
 
 genai.configure(api_key=settings.GEMINI_API_KEY)
 
@@ -22,13 +23,13 @@ def recommend_places(mood):
     [
       {{
         "name":"JK Temple",
-        "reason":"Peaceful atmosphere",
+        "reason":"Peaceful atmosphere"
       }}
     ]
     """
 
     response = model.generate_content(prompt)
 
-    text = response.text
+    print(response.text)
 
-    return json.loads(text)
+    return Response(response.text)
