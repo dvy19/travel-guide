@@ -1,34 +1,35 @@
-import google.generativeai as genai
+from google import genai
 from django.conf import settings
 import json
-from rest_framework.response import Response
-import traceback
 
-genai.configure(api_key=settings.GEMINI_API_KEY)
-
-model = genai.GenerativeModel("gemini-2.5-flash")
-
+client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 def recommend_places(mood):
-    try:
-        prompt = f"""
-        The user is travelling in Kanpur.
 
-        Their mood is {mood}.
+    prompt = f"""
+    The user is travelling in Kanpur.
 
-        Recommend exactly five places.
+    Their mood is {mood}.
 
-        Return ONLY valid JSON.
-        """
+    Recommend exactly 5 places.
 
-        response = model.generate_content(prompt)
+    Return ONLY valid JSON.
 
-        print("Gemini Response:")
-        print(response.text)
+    Example:
 
-        return response.text
+    [
+      {{
+        "name":"JK Temple",
+        "reason":"Peaceful atmosphere"
+      }}
+    ]
+    """
 
-    except Exception as e:
-        print("ERROR OCCURRED:")
-        traceback.print_exc()
-        raise
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
+
+    print(response.text)
+
+    return json.loads(response.text)
