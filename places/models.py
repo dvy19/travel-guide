@@ -17,13 +17,13 @@ class LikePlace(models.Model):
     user = models.ForeignKey(
         "users.CustomUser",
         on_delete=models.CASCADE,
-        related_name="saved_places"
+        related_name="liked_places"
     )
 
     place = models.ForeignKey(
         "Place",
         on_delete=models.CASCADE,
-        related_name="saved_by_users"
+        related_name="liked_by_users"
     )
 
     liked_at = models.DateTimeField(auto_now_add=True)
